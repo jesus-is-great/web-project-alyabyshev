@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Поиск фильма</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.film(class="form-control") }}<br>
+        {% for error in form.film.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+    {% if current_user.is_authenticated %}
+    <a href="/film" class="btn btn-secondary">Добавить фильм</a>
+    {% endif %}
+</form>
+{% endblock %}

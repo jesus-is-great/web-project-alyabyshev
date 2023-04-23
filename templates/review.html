@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Добавление записи</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.film.label }}<br>
+        {{ form.film(class="form-control") }}<br>
+        {% for error in form.film.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    {% if current_user.is_authenticated %}
+    <a href="/film" class="btn btn-secondary">Добавить фильм</a>
+    {% endif %}
+    </p>
+    <p>
+        {{ form.rating.label }}<br>
+        {{ form.rating(class="form-control") }}
+        <output id="value"></output>/10
+        <script>
+                const value = document.querySelector("#value")
+                const input = document.querySelector("#rating")
+                value.textContent = input.value
+                input.addEventListener("input", (event) => {  value.textContent = event.target.value})
+        </script>
+        {% for error in form.rating.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(class="form-control") }}<br>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.content.label }}<br>
+        {{ form.content(class="form-control") }}<br>
+        {% for error in form.content.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    <a href="/" class="btn btn-danger">Отмена</a>
+    {{message}}
+</form>
+{% endblock %}

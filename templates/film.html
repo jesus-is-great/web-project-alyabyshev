@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ film.name }}</h1>
+<p>
+    Рейтинг<br>
+    {% if film.rating != None %}
+    {{ film.rating }}/10
+    {% else %}
+    Нет отзывов
+    {% endif %}
+</p>
+<p>
+    Год<br>
+    {{ film.year }}
+</p>
+<p>
+    Режиссер<br>
+    {{ film.director }}
+</p>
+<p>
+    Жанр
+<ul>
+    {% for genre in film.genres %}
+    <li>{{ genre.genre }}
+        {% endfor %}
+</ul>
+</p>
+{% if current_user.is_authenticated%}
+<div>
+    <a href="/review_by_film/{{ film.id }}" class="btn btn-secondary">
+        Написать отзыв
+    </a>
+</div>
+{% endif %}
+{% for item in film.reviews%}
+<div class="col-md6 border rounded">
+    <h2>{{item.film.name}}({{item.film.year}}) - {{item.rating}}/10</h2>
+    <h3>{{item.title}}</h3>
+    <div>
+        {{item.content}}
+    </div>
+    <div>
+        Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+    </div>
+    {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/review/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/review_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}
