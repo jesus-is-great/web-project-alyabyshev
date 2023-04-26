@@ -188,6 +188,7 @@ def add_film():
             file.save(f'static/img/{film.id}_cover.jpg')
         else:
             film.cover = False
+        db_sess.commit()
         return redirect('/film/' + str(film.id))
     return render_template('add_film.html', title='Добавление фильма',
                            form=form)
