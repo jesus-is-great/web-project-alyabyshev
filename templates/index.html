@@ -7,25 +7,29 @@
 {% endif %}
 <a href="search" class="btn btn-secondary">Найти фильм</a>
 {% for item in reviews%}
-<div class="col-md6 border rounded">
-    <h2>{{item.film.name}}({{item.film.year}}) - {{item.rating}}/10</h2>
-    <h3>{{item.title}}</h3>
-    <div>
-        {{item.content}}
+<div class="col-md6 border rounded media">
+    {% set a = url_for('static', filename='img/') + item.film_id|string + "_cover.jpg" %}
+    <img class="mr-3" src="{{a}}" alt="{{a}}" height="25%" width="25%">
+    <div class="media-body">
+        <h2>{{item.film.name}}({{item.film.year}}) - {{item.rating}}/10</h2>
+        <h3>{{item.title}}</h3>
+        <p>
+            {{item.content}}
+        </p>
+        <p>
+            Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+        </p>
+        {% if current_user.is_authenticated and current_user == item.user %}
+        <p>
+            <a href="/review/{{ item.id }}" class="btn btn-warning">
+                Изменить
+            </a>
+            <a href="/review_delete/{{ item.id }}" class="btn btn-danger">
+                Удалить
+            </a>
+        </p>
     </div>
-    <div>
-        Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
-    </div>
-    {% if current_user.is_authenticated and current_user == item.user %}
-    <div>
-        <a href="/review/{{ item.id }}" class="btn btn-warning">
-            Изменить
-        </a>
-        <a href="/review_delete/{{ item.id }}" class="btn btn-danger">
-            Удалить
-        </a>
-    </div>
-{% endif %}
+    {% endif %}
 </div>
 {% endfor %}
 {% endblock %}

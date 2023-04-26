@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, abort
+from flask import Flask, render_template, redirect, request, abort, url_for
 from data import db_session, review_resources
 from data.films import Film
 from data.reviews import Review
@@ -182,6 +182,12 @@ def add_film():
             film.genres.append(db_sess.query(Genre).filter(Genre.id == id).first())
         db_sess.add(film)
         db_sess.commit()
+        file = request.files['file']
+        if file:
+            film.cover = True
+            file.save(f'static/img/{film.id}_cover.jpg')
+        else:
+            film.cover = False
         return redirect('/film/' + str(film.id))
     return render_template('add_film.html', title='Добавление фильма',
                            form=form)
@@ -191,7 +197,9 @@ def add_film():
 def film(id):
     db_sess = db_session.create_session()
     film = db_sess.query(Film).filter(Film.id == id).first()
-    return render_template('film.html', film=film)
+    file = "{{ url_for('static', filename='img/" + str(film.id) + "_cover.jpeg') }}"
+    print(file)
+    return render_template('film.html', film=film, id=str(id))
 
 
 @app.route('/review_by_film/<int:id>', methods=['GET', 'POST'])

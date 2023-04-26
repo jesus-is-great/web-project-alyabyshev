@@ -2,6 +2,8 @@
 
 {% block content %}
 <h1>{{ film.name }}</h1>
+{% set a = url_for('static', filename='img/') + film.id|string + "_cover.jpg" %}
+<img class="img-fluid" src="{{a}}" alt="{{a}}">
 <p>
     Рейтинг<br>
     {% if film.rating != None %}
